@@ -29,6 +29,7 @@ SECRET_KEY = 'django-insecure-#m9@vdssy^%eo@m@^yhj%4nar-ajz3bkeoet4f5+7b@phh^0dt
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = [os.getenv('VDS_HOST')]
 
 
 # Application definition
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'drf_yasg',
+    'corsheaders',
 
     'users',
 ]
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -129,9 +132,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = (
-    BASE_DIR / 'static',
-)
+ENV_TYPE = os.getenv('ENV_TYPE')
+
+if ENV_TYPE == 'local':
+    STATICFILES_DIRS = (
+        BASE_DIR / 'static',  # настройка для встроенного сервера разработки
+    )
+else:
+    STATIC_ROOT = BASE_DIR / "static"
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -142,3 +150,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+CORS_ALLOWED_ORIGINS = [
+    "https://read-only.example.com",
+    "https://read-and-write.example.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://read-and-write.example.com",
+]
