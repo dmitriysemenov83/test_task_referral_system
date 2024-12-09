@@ -19,4 +19,4 @@
 1. **Клонируйте репозиторий:**
 
    ```bash
-   git clone <URL вашего репозитория>
+   git clone https://github.com/dmitriysemenov83/test_task_referral_system
